@@ -8,7 +8,6 @@ import {
   describeSeed,
   dictionarySet,
   Difficulty,
-  gameName,
   pick,
   resetRng,
   seed,
@@ -31,12 +30,9 @@ interface GameProps {
   keyboardLayout: string;
 }
 
-const targets = targetList.slice(0, targetList.indexOf("murky") + 1); // Words no rarer than this one
+const targets = targetList.slice(0, targetList.indexOf("think") + 1); // Words no rarer than this one
 const minLength = 4;
-const defaultLength = 5;
 const maxLength = 11;
-const limitLength = (n: number) =>
-  n >= minLength && n <= maxLength ? n : defaultLength;
 
 function randomTarget(wordLength: number): string {
   const eligible = targets.filter((word) => word.length === wordLength);
@@ -71,8 +67,9 @@ if (initChallenge && !dictionarySet.has(initChallenge)) {
 
 function parseUrlLength(): number {
   const lengthParam = urlParam("length");
-  if (!lengthParam) return defaultLength;
-  return limitLength(Number(lengthParam));
+  if (!lengthParam) return 5;
+  const length = Number(lengthParam);
+  return length >= minLength && length <= maxLength ? length : 5;
 }
 
 function parseUrlGameNumber(): number {
@@ -120,7 +117,8 @@ function Game(props: GameProps) {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
     setChallenge("");
-    const newWordLength = limitLength(wordLength);
+    const newWordLength =
+      wordLength >= minLength && wordLength <= maxLength ? wordLength : 5;
     setWordLength(newWordLength);
     setTarget(randomTarget(newWordLength));
     setHint("");
@@ -261,7 +259,7 @@ function Game(props: GameProps) {
   return (
     <div className="Game" style={{ display: props.hidden ? "none" : "block" }}>
       <div className="Game-options">
-        <label htmlFor="wordLength">Letters:</label>
+        {/* <label htmlFor="wordLength">Letters:</label>
         <input
           type="range"
           min={minLength}
@@ -283,7 +281,7 @@ function Game(props: GameProps) {
             setWordLength(length);
             setHint(`${length} letters`);
           }}
-        ></input>
+        ></input> */}
         <button
           style={{ flex: "0 0 auto" }}
           disabled={gameState !== GameState.Playing || guesses.length === 0}
@@ -320,45 +318,6 @@ function Game(props: GameProps) {
         letterInfo={letterInfo}
         onKey={onKey}
       />
-      <div className="Game-seed-info">
-        {challenge
-          ? "playing a challenge game"
-          : seed
-          ? `${describeSeed(seed)} — length ${wordLength}, game ${gameNumber}`
-          : "playing a random game"}
-      </div>
-      <p>
-        <button
-          onClick={() => {
-            share("Link copied to clipboard!");
-          }}
-        >
-          Share a link to this game
-        </button>{" "}
-        {gameState !== GameState.Playing && (
-          <button
-            onClick={() => {
-              const emoji = props.colorBlind
-                ? ["⬛", "🟦", "🟧"]
-                : ["⬛", "🟨", "🟩"];
-              const score = gameState === GameState.Lost ? "X" : guesses.length;
-              share(
-                "Result copied to clipboard!",
-                `${gameName} ${score}/${props.maxGuesses}\n` +
-                  guesses
-                    .map((guess) =>
-                      clue(guess, target)
-                        .map((c) => emoji[c.clue ?? 0])
-                        .join("")
-                    )
-                    .join("\n")
-              );
-            }}
-          >
-            Share emoji results
-          </button>
-        )}
-      </p>
     </div>
   );
 }

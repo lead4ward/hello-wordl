@@ -26,11 +26,7 @@ function useSetting<T>(
   return [current, setSetting];
 }
 
-const now = new Date();
-const todaySeed =
-  now.toLocaleDateString("en-US", { year: "numeric" }) +
-  now.toLocaleDateString("en-US", { month: "2-digit" }) +
-  now.toLocaleDateString("en-US", { day: "2-digit" });
+const todaySeed = new Date().toISOString().replace(/-/g, "").slice(0, 8);
 
 function App() {
   type Page = "game" | "about" | "settings";
@@ -71,18 +67,15 @@ function App() {
 
   return (
     <div className={"App-container" + (colorBlind ? " color-blind" : "")}>
-      <h1>
+      <h1 style={{color: "#36b"}}>
         <span
           style={{
-            color: difficulty > 0 ? "#e66" : "inherit",
-            fontStyle: difficulty > 1 ? "italic" : "inherit",
-          }}
-        >
-          hell
+            color: "#8c4"}}>
+          lead
         </span>
-        o wordl
+        4wordle
       </h1>
-      <div className="top-right">
+      {/* <div className="top-right">
         {page !== "game" ? (
           link("❌", "Close", "game")
         ) : (
@@ -91,8 +84,8 @@ function App() {
             {link("⚙️", "Settings", "settings")}
           </>
         )}
-      </div>
-      <div
+      </div> */}
+      {/* <div
         style={{
           position: "absolute",
           left: 5,
@@ -103,7 +96,7 @@ function App() {
         <a href={seed ? "?random" : "?seed=" + todaySeed}>
           {seed ? "Random" : "Today's"}
         </a>
-      </div>
+      </div> */}
       {page === "about" && <About />}
       {page === "settings" && (
         <div className="Settings">

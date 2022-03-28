@@ -106,7 +106,6 @@ table.Game-rows > tbody {
   flex: 1;
   align-items: center;
   justify-content: center;
-  font-family: inherit;
   font-size: 20px;
   color: inherit;
   text-decoration: inherit;
@@ -141,8 +140,8 @@ table.Game-rows > tbody {
 }
 
 body.dark {
-  background-color: #404040;
-  color: #e0e0e0;
+  background-color: #ffffff;
+  color: #8c4;
   color-scheme: dark;
 }
 

@@ -1,12 +1,12 @@
 import { Clue } from "./clue";
 import { Row, RowState } from "./Row";
-import { gameName, maxGuesses } from "./util";
+import { maxGuesses } from "./util";
 
 export function About() {
   return (
     <div className="App-about">
       <p>
-        <i>{gameName}</i> is a remake of the word game{" "}
+        <i>hello wordl</i> is a remake of the word game{" "}
         <a href="https://www.powerlanguage.co.uk/wordle/">
           <i>Wordle</i>
         </a>{" "}
